@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Хобі – Тимур</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Мої хобі</h1>
+</header>
+
+<nav>
+  <a href="index.html">Головна</a>
+  <a href="about.html">Про мене</a>
+  <a href="hobbies.html" aria-current="page">Хобі</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="contacts.html">Контакти</a>
+</nav>
+
+<main class="site-main">
+    <h2>Чим я люблю займатися</h2>
+
+    <p>У вільний час я люблю відпочивати та робити те, що приносить задоволення й надихає:</p>
+
+    <ul>
+        <li><strong>Музика</strong> – слухаю різні жанри, від репу до саундтреків з аніме та ігор.</li>
+        <li><strong>Комп’ютерні ігри</strong> – подобаються як сюжетні ігри, так і онлайн-проєкти з друзями.</li>
+        <li><strong>Аніме</strong> – дивлюся різні жанри, цікавлять історії з хорошим сюжетом і атмосферою.</li>
+        <li><strong>Технології</strong> – цікавлюся новими гаджетами, програмами та можливостями ІТ.</li>
+    </ul>
+
+    <p>
+        Я вважаю, що хобі допомагають не тільки відпочити, а й розвиватися, знаходити нові ідеї 
+        та мотивують рухатися далі.
+    </p>
+
+    <div class="hobby-photos">
+        <figure>
+            <button class="thumb-btn" aria-label="Відкрити: Відпочинок на свіжому повітрі">
+                <img src="img/music.jpg" data-full="img/music.jpg" alt="Відпочинок на свіжому повітрі">
+            </button>
+            <figcaption>Відпочинок на свіжому повітрі — відновлюю енергію та знаходжу натхнення</figcaption>
+        </figure>
+
+        <figure>
+            <button class="thumb-btn" aria-label="Відкрити: Граю з друзями">
+                <img src="img/The long dark.jpg" data-full="img/The long dark.jpg" alt="Навчання та розвиток">
+            </button>
+            <figcaption>Граю з друзями — весело та цікаво</figcaption>
+        </figure>
+    </div>
+</main>
+
+<footer>
+    <p>Автор сайту: Тимур</p>
+</footer>
+
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="lightbox-backdrop" data-dismiss></div>
+
+  <div class="lightbox-content" role="document" aria-live="polite">
+    <figure class="lb-figure">
+      <img id="lb-image" src="" alt="">
+      <div class="lb-controls">
+        <button class="lb-prev" aria-label="Попереднє">&#10094;</button>
+        <button class="lb-close" aria-label="Закрити">&times;</button>
+        <button class="lb-next" aria-label="Наступне">&#10095;</button>
+      </div>
+      <figcaption id="lb-caption" class="lb-caption"></figcaption>
+    </figure>
+  </div>
+</div>
+
+<script>
+  (function(){
+    const thumbs = Array.from(document.querySelectorAll('.hobby-photos .thumb-btn img'));
+    const lightbox = document.getElementById('lightbox');
+    const lbImage = document.getElementById('lb-image');
+    const lbCaption = document.getElementById('lb-caption');
+    const closeBtn = document.querySelector('.lb-close');
+    const prevBtn = document.querySelector('.lb-prev');
+    const nextBtn = document.querySelector('.lb-next');
+    const backdrop = document.querySelector('.lightbox-backdrop');
+
+    let currentIndex = -1;
+
+    function openLightbox(index){
+      const img = thumbs[index];
+      const full = img.dataset.full || img.src;
+      lbImage.src = full;
+      lbImage.alt = img.alt || '';
+      lbCaption.textContent = img.closest('figure')?.querySelector('figcaption')?.textContent || '';
+      currentIndex = index;
+      lightbox.setAttribute('aria-hidden','false');
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+
+    function closeLightbox(){
+      lightbox.setAttribute('aria-hidden','true');
+      lightbox.classList.remove('open');
+      lbImage.src = '';
+      currentIndex = -1;
+      document.body.style.overflow = '';
+    }
+
+    function showNext(){
+      if (thumbs.length === 0) return;
+      const next = currentIndex < thumbs.length - 1 ? currentIndex + 1 : 0;
+      openLightbox(next);
+    }
+    function showPrev(){
+      if (thumbs.length === 0) return;
+      const prev = currentIndex > 0 ? currentIndex - 1 : thumbs.length - 1;
+      openLightbox(prev);
+    }
+
+    thumbs.forEach((img, i) => {
+      img.closest('.thumb-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        openLightbox(i);
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    nextBtn.addEventListener('click', showNext);
+    prevBtn.addEventListener('click', showPrev);
+    backdrop.addEventListener('click', closeLightbox);
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') showNext();
+      if (e.key === 'ArrowLeft') showPrev();
+    });
+  })();
+</script>
+
+</body>
+</html>

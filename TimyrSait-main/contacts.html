@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Контакти – Тимур</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Контакти</h1>
+</header>
+
+<nav>
+  <a href="index.html">Головна</a>
+  <a href="about.html">Про мене</a>
+  <a href="hobbies.html">Хобі</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="contacts.html" aria-current="page">Контакти</a>
+</nav>
+
+<main>
+    <h2>Зв’язок зі мною</h2>
+
+    <form id="contactForm">
+        <label for="name">Ваше ім'я:</label><br>
+        <input type="text" id="name" name="user_name" required><br>
+
+        <label for="email">Ваш Email:</label><br>
+        <input type="email" id="email" name="user_email" required><br>
+
+        <label for="message">Повідомлення:</label><br>
+        <textarea id="message" name="message" rows="5" required></textarea><br>
+
+        <button type="submit">Надіслати</button>
+    </form>
+
+    <h3>Додаткова інформація</h3>
+    <p>Email: vaha3175@gmail.com</p>
+    <p>Місто: Черкаси</p>
+</main>
+
+<footer>
+    <p>Автор сайту: Тимур</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init('YOUR_EMAILJS_USER_ID');
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Відправка...';
+      emailjs.send('YOUR_SERVICE_ID','YOUR_TEMPLATE_ID',{
+        user_name: form.user_name.value,
+        user_email: form.user_email.value,
+        message: form.message.value
+      }).then(function(){
+        submitBtn.textContent = 'Надіслано';
+        form.reset();
+        submitBtn.disabled = false;
+      }, function(err){
+        submitBtn.textContent = 'Помилка. Спробуйте ще';
+        submitBtn.disabled = false;
+      });
+    });
+  })();
+</script>
+</body>
+</html>

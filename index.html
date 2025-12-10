@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Головна – Тимур</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Персональний сайт Тимура</h1>
+</header>
+
+<nav>
+  <a href="index.html" aria-current="page">Головна</a>
+  <a href="about.html">Про мене</a>
+  <a href="hobbies.html">Хобі</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="contacts.html">Контакти</a>
+</nav>
+
+<main>
+    <h2>Вітаю на моєму сайті!</h2>
+
+    <div class="profile-wrap">
+      <button class="thumb-btn" aria-label="Відкрити фото">
+        <img src="img/me.jpg" data-full="img/me.jpg" alt="Моє фото" class="profile">
+      </button>
+    </div>
+
+    <p>
+        Мене звати Тимур, мені 18 років. Я живу в Черкасах і навчаюся в Черкаському Державному Бізнес-Коледжі 
+        на інженерії програмного забезпечення. У вільний час люблю слухати музику, 
+        грати в комп’ютерні ігри та дивитися аніме.
+    </p>
+
+    <p>
+        Цей сайт створений як навчальний проєкт. Тут ви можете дізнатися більше про мене, мої хобі та те, 
+        як зі мною зв’язатися.
+    </p>
+</main>
+
+<footer>
+    <p>Автор сайту: Тимур · Steam: <a href="https://steamcommunity.com/id/sacred4797/" target="_blank">моє посилання</a></p>
+</footer>
+
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="lightbox-backdrop" data-dismiss></div>
+
+  <div class="lightbox-content" role="document" aria-live="polite">
+    <figure class="lb-figure">
+      <img id="lb-image" src="" alt="">
+      <div class="lb-controls">
+        <button class="lb-close" aria-label="Закрити">&times;</button>
+      </div>
+      <figcaption id="lb-caption" class="lb-caption"></figcaption>
+    </figure>
+  </div>
+</div>
+
+<script>
+  (function(){
+    const thumbs = Array.from(document.querySelectorAll('.thumb-btn img'));
+    const lightbox = document.getElementById('lightbox');
+    const lbImage = document.getElementById('lb-image');
+    const lbCaption = document.getElementById('lb-caption');
+    const closeBtn = document.querySelector('.lb-close');
+    const backdrop = document.querySelector('.lightbox-backdrop');
+
+    function openLightbox(index){
+      const img = thumbs[index];
+      const full = img.dataset.full || img.src;
+      lbImage.src = full;
+      lbImage.alt = img.alt || '';
+      lbCaption.textContent = img.alt || '';
+      lightbox.setAttribute('aria-hidden','false');
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+
+    function closeLightbox(){
+      lightbox.setAttribute('aria-hidden','true');
+      lightbox.classList.remove('open');
+      lbImage.src = '';
+      document.body.style.overflow = '';
+    }
+
+    thumbs.forEach((img, i) => {
+      img.closest('.thumb-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        openLightbox(i);
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    backdrop.addEventListener('click', closeLightbox);
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+    });
+  })();
+</script>
+
+</body>
+</html>
